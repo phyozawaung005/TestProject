@@ -1,5 +1,7 @@
 package org.testproject;
 
+import jdk.internal.foreign.StringSupport;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -34,6 +36,9 @@ public class Main {
     public static void main(String[] args) {
         Main m = new Main();
         Connection con = m.get_DB_Connection();
+
+        Database_Read dr = new Database_Read(con);
+        dr.read();
         try {
             con.close();
         }
