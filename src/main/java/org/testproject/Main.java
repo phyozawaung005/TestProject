@@ -9,23 +9,30 @@ import java.sql.SQLException;
 public class Main {
 
     private Connection get_DB_Connection() {
-        Connection con =  null;
+        Connection con = null;
         try {
+            Thread.sleep(30000);
             Class.forName("com.mysql.cj.jdbc.Driver");
-            con =  DriverManager.getConnection("jdbc:mysql://localhost:3306/testdb","root","");
-            System.out.println("Connected to database successfully");
-
         }
-        catch (ClassNotFoundException ce) {
-            System.out.println(ce.getMessage());
-        }
-        catch (SQLException se) {
-            se.printStackTrace();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
+        catch (Exception ex) {
+            ex.printStackTrace();
         }
 
+        int attempt = 1;
+
+        while(true) {
+            try {
+                Thread.sleep(5000);
+                con = DriverManager.getConnection("jdbc:mysql://db:3306/testdb?useSSL=false&allowPublicKeyRetrieval=true", "root", "root");
+                System.out.println("Successful connected.");
+                break;
+            }
+            catch (Exception e) {
+                System.out.println(e.getMessage());
+                System.out.println("Fail to connect, attempt = " + attempt);
+                attempt++;
+            }
+        }
 
         return con;
     }
